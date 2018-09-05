@@ -3,7 +3,7 @@
 chomp($file_name = $ARGV[0]); # name of file containing processing and treatment structure
 chomp($proc = $ARGV[1]); # number of processors
 
-###### making contigs
+##### making contigs
 #system("mothur \"#make.contigs(file=$file_name, processors=$proc); summary.seqs()\"");
 
 @name = split/\./,$file_name;
@@ -30,11 +30,20 @@ chomp($proc = $ARGV[1]); # number of processors
 #system("mothur \"#make.shared(list=$name[0].trim.contigs.good.unique.pick.pick.dgc.list, count=$name[0].trim.contigs.good.denovo.uchime.pick.pick.count_table,label=0.03)\"");
 #system("mothur \"#classify.otu(list=$name[0].trim.contigs.good.unique.pick.pick.dgc.list,count=$name[0].trim.contigs.good.denovo.uchime.pick.pick.count_table, taxonomy=$name[0].trim.contigs.good.unique.pick.nr_v128.wang.pick.taxonomy,label=0.03)\"");
 
+##### Recovering the representative sequences per OTU 
+#system("mothur \"#bin.seqs(list=$name[0].trim.contigs.good.unique.pick.pick.dgc.list,fasta=$name[0].trim.contigs.good.unique.pick.fasta,label=0.03)\"");
+#system("mothur \"#pairwise.seqs(fasta=$name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.fasta, output=lt, processors=$proc)\"");
+#system("mothur \"#get.oturep(phylip=$name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.phylip.dist, list=$name[0].trim.contigs.good.unique.pick.pick.dgc.list,count=$name[0].trim.contigs.good.denovo.uchime.pick.pick.count_table,fasta=$name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.fasta)\"");
+
+###### Phylogenetic tree
+#system("mothur \"#pairwise.seqs(fasta=$name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.rep.fasta, output=lt, processors=$proc)\"");
+#system("mothur \"#clearcut(phylip=$name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.rep.phylip.dist)\"");
+
 ##### Result directory and files
 system("mkdir results");
 system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.shared results/$name[0].shared");
-system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.cons.taxonomy results/$name[0].0.03.cons.taxonomy");
-system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.cons.tax.summary results/$name[0].0.03.cons.tax.summary");
+system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.cons.taxonomy results/$name[0].taxonomy");
+system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.cons.tax.summary results/$name[0].tax.summary");
+system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.rep.fasta results/$name[0].fasta");
+system("cp $name[0].trim.contigs.good.unique.pick.pick.dgc.0.03.rep.phylip.tre results/$name[0].tre");
 
-##### Recovering the representative sequences per OTU
-#system("mothur \"#bin.seqs(list=treat.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.list,fasta=treat.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta,label=0.03)\"");
